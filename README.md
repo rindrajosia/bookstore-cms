@@ -31,7 +31,7 @@ To get a local copy up and running follow these simple example steps:
 
 8. Finally `npm start`.
 
-## See a live demo [Here](https://josia-calculator.herokuapp.com/)
+## See a live demo [Here](https://redux-cms.herokuapp.com/)
 
 ## Show your support
 Give a ⭐️ if you like this project!
