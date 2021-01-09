@@ -14,6 +14,7 @@ const BooksList = ({ books }) => (
   </table>
 );
 
+
 BooksList.propTypes = {
   books: PropTypes.arrayOf(PropTypes.object),
 };
@@ -22,4 +23,8 @@ BooksList.defaultProps = {
   books: [{}],
 };
 
-export default connect(state => ({ books: getBookList(state) }))(BooksList);
+const mapStateToProps = state => {
+  const todos = getBookList(state);
+  return { todos };
+}
+export default connect(mapStateToProps)(BooksList);
