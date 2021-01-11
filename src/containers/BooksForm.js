@@ -17,17 +17,14 @@ class BooksForm extends React.Component {
       title: '',
       category: '',
     };
-    this.updateInput = this.updateInput.bind(this);
-    this.updateSelect = this.updateSelect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
 
-  updateInput = title => {
-    this.setState({ title });
-  }
-
-  updateSelect = category => {
-    this.setState({ category });
+  handleChange = e => {
+    const { name } = e.target;
+    const { value } = e.target;
+    this.setState(prevState => ({ ...prevState, [name]: value }));
   }
 
   handleReset = () => {
@@ -49,14 +46,14 @@ class BooksForm extends React.Component {
               id="title"
               required
               value={title}
-              onChange={e => this.updateInput(e.target.value)}
+              onChange={e => this.handleChange(e)}
             />
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="category">
             Book category:
-            <select value={category} onChange={e => this.updateInput(e.target.value)} className="form-control" id="category" name="category" required>
+            <select value={category} onChange={e => this.handleChange(e)} className="form-control" id="category" name="category" required>
               <option value="">None</option>
               {CATEGORIES.map(category => (
                 <option key={Math.floor(Math.random() * 10000)} value={category}>
