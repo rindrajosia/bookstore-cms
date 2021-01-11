@@ -1,5 +1,9 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createBook } from '../actions';
+
 const CATEGORIES = [
   'Action',
   'Biography',
@@ -17,21 +21,26 @@ class BooksForm extends React.Component {
       title: '',
       category: '',
     };
-    this.updateInput = this.updateInput.bind(this);
-    this.updateSelect = this.updateSelect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  updateInput = title => {
-    this.setState({ title });
-  }
-
-  updateSelect = category => {
-    this.setState({ category });
+  handleChange = e => {
+    const { name } = e.target;
+    const { value } = e.target;
+    this.setState(prevState => ({ ...prevState, [name]: value }));
   }
 
   handleReset = () => {
     this.setState({ title: '', category: '' });
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const { createBook } = this.props;
+    createBook(this.state);
+    this.handleReset();
   }
 
   render() {
@@ -49,14 +58,14 @@ class BooksForm extends React.Component {
               id="title"
               required
               value={title}
-              onChange={e => this.updateInput(e.target.value)}
+              onChange={e => this.handleChange(e)}
             />
           </label>
         </div>
         <div className="form-group">
           <label htmlFor="category">
             Book category:
-            <select value={category} onChange={e => this.updateInput(e.target.value)} className="form-control" id="category" name="category" required>
+            <select value={category} onChange={e => this.handleChange(e)} className="form-control" id="category" name="category" required>
               <option value="">None</option>
               {CATEGORIES.map(category => (
                 <option key={Math.floor(Math.random() * 10000)} value={category}>
@@ -66,11 +75,19 @@ class BooksForm extends React.Component {
             </select>
           </label>
         </div>
-        <button type="button" className="btn btn-primary">Submit</button>
+        <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
         <button type="button" className="btn btn-primary" onClick={this.handleReset}>Reset</button>
       </form>
     );
   }
 }
 
-export default BooksForm;
+BooksForm.propTypes = {
+  createBook: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = dispatch => ({
+  createBook: book => { dispatch(createBook(book)); },
+});
+
+export default connect(null, mapDispatchToProps)(BooksForm);
