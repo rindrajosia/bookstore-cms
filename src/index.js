@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
-
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore } from 'redux';
 import App from './components/App';
 import books from './reducers/books';
@@ -29,7 +29,8 @@ const initialState = {
   ],
 };
 
-const store = createStore(books, initialState);
+const store = createStore(books, initialState,
+  composeWithDevTools());
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
