@@ -7,7 +7,7 @@ import { removeBook, changeFilter } from '../actions';
 import { getBooksByFilter } from '../redux/selectors';
 import CategoryFilter from '../components/CategoryFilter';
 
-const BooksList = ({ books, removeBook }) => {
+const BooksList = ({ books, removeBook, changeFilter }) => {
   const handleRemoveBook = book => {
     removeBook(book);
   };
@@ -22,7 +22,7 @@ const BooksList = ({ books, removeBook }) => {
       </div>
       <table>
         <tbody>
-          {books
+          {books && books.length
             ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
         </tbody>
       </table>

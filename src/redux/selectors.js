@@ -6,7 +6,6 @@ export const getBookList = store => (getBooksState(store) ? getBooksState(store)
 
 export const getBooksByFilter = (store, filter) => {
   const allBooks = getBookList(store).books;
-  console.log(allBooks);
   switch (filter) {
     case CATEGORY_FILTERS.ALL:
       return allBooks;
