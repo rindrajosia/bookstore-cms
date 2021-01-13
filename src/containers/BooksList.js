@@ -2,27 +2,38 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Book from '../components/Book';
-import { removeBook } from '../actions';
+import { removeBook, changeFilter } from '../actions';
 
-import { getBookList } from '../redux/selectors';
+import { getBooksByFilter } from '../redux/selectors';
+import CategoryFilter from '../components/CategoryFilter';
 
 const BooksList = ({ books, removeBook }) => {
   const handleRemoveBook = book => {
     removeBook(book);
   };
+  const handleFilterChange = filter => {
+    changeFilter(filter);
+  };
+
   return (
-    <table>
-      <tbody>
-        {books
-          ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
-      </tbody>
-    </table>
+    <>
+      <div className="form-group">
+        <CategoryFilter handleFilterChange={handleFilterChange} />
+      </div>
+      <table>
+        <tbody>
+          {books
+            ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
+        </tbody>
+      </table>
+    </>
   );
 };
 
 BooksList.propTypes = {
   books: PropTypes.arrayOf(PropTypes.object),
   removeBook: PropTypes.func.isRequired,
+  changeFilter: PropTypes.func.isRequired,
 };
 
 BooksList.defaultProps = {
@@ -30,8 +41,9 @@ BooksList.defaultProps = {
 };
 
 const mapStateToProps = state => {
-  const books = getBookList(state);
+  const { filter } = state;
+  const books = getBooksByFilter(state, filter);
   return { books };
 };
 
-export default connect(mapStateToProps, { removeBook })(BooksList);
+export default connect(mapStateToProps, { removeBook, changeFilter })(BooksList);
