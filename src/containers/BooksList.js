@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Book from '../components/Book';
+import Info from '../dialogs/Info';
 import { removeBook, changeFilter } from '../actions';
 
 import { getBooksByFilter } from '../redux/selectors';
@@ -21,7 +22,8 @@ const BooksList = ({ books, removeBook, changeFilter }) => {
         <CategoryFilter handleFilterChange={handleFilterChange} />
       </div>
       {books && books.length
-        ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
+        ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />)
+        : <Info />}
     </div>
   );
 };
