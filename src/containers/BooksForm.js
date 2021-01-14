@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createBook } from '../actions';
+import Warning from '../dialogs/Warning';
 
 const CATEGORIES = [
   'Action',
@@ -20,6 +21,7 @@ class BooksForm extends React.Component {
     this.state = {
       title: '',
       category: '',
+      show: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -27,13 +29,12 @@ class BooksForm extends React.Component {
   }
 
   handleChange = e => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name, value } = e.target;
     this.setState(prevState => ({ ...prevState, [name]: value }));
   }
 
   handleReset = () => {
-    this.setState({ title: '', category: '' });
+    this.setState({ title: '', category: '', show: false });
   }
 
   handleSubmit = e => {
@@ -41,17 +42,19 @@ class BooksForm extends React.Component {
     const { createBook } = this.props;
     const { title, category } = this.state;
     if (title !== '' && category !== '') {
-      createBook(this.state);
+      createBook({ title, category });
+      this.handleReset();
+    } else {
+      this.setState(prevState => ({ ...prevState, show: true }));
     }
-    this.handleReset();
   }
 
   render() {
-    const { title, category } = this.state;
+    const { title, category, show } = this.state;
     return (
       <div className="form-pannel">
         <h1 className="add-book">ADD NEW BOOK</h1>
-
+        {show && <Warning />}
         <form className="form">
           <input
             type="text"
