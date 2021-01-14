@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { FILTER, CATEGORY_FILTERS } from '../constant/constants';
 
 const CategoryFilter = ({ filter, handleFilterChange }) => (
-  <div className="form-group">
+  <>
     <label htmlFor="category">
-      Filter Book by category:
-      <select value={filter} onChange={e => { handleFilterChange(e.target.value); }} className="form-control" id="category" name="category" required>
+      <span className="add-book">Filter Book by category:</span>
+      <select className="select" value={filter} onChange={e => { handleFilterChange(e.target.value); }} id="category" name="category" required>
         {FILTER.map(category => (
           <option key={Math.floor(Math.random() * 10000)} value={category}>
             {category}
@@ -15,7 +15,7 @@ const CategoryFilter = ({ filter, handleFilterChange }) => (
         ))}
       </select>
     </label>
-  </div>
+  </>
 );
 
 CategoryFilter.propTypes = {

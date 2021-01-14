@@ -16,17 +16,13 @@ const BooksList = ({ books, removeBook, changeFilter }) => {
   };
 
   return (
-    <>
-      <div className="form-group">
+    <div className="container">
+      <div className="lesson-panel">
         <CategoryFilter handleFilterChange={handleFilterChange} />
       </div>
-      <table>
-        <tbody>
-          {books && books.length
-            ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
-        </tbody>
-      </table>
-    </>
+      {books && books.length
+        ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
+    </div>
   );
 };
 
