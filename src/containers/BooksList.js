@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Book from '../components/Book';
+import Info from '../dialogs/Info';
 import { removeBook, changeFilter } from '../actions';
 
 import { getBooksByFilter } from '../redux/selectors';
@@ -16,17 +17,14 @@ const BooksList = ({ books, removeBook, changeFilter }) => {
   };
 
   return (
-    <>
-      <div className="form-group">
+    <div className="container">
+      <div className="lesson-panel">
         <CategoryFilter handleFilterChange={handleFilterChange} />
       </div>
-      <table>
-        <tbody>
-          {books && books.length
-            ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />) : 'No Books !'}
-        </tbody>
-      </table>
-    </>
+      {books && books.length
+        ? books.map(book => <Book key={book.id} book={book} removeBook={handleRemoveBook} />)
+        : <Info />}
+    </div>
   );
 };
 

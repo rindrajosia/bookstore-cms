@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createBook } from '../actions';
+import Warning from '../dialogs/Warning';
 
 const CATEGORIES = [
   'Action',
@@ -20,6 +21,7 @@ class BooksForm extends React.Component {
     this.state = {
       title: '',
       category: '',
+      show: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -27,57 +29,58 @@ class BooksForm extends React.Component {
   }
 
   handleChange = e => {
-    const { name } = e.target;
-    const { value } = e.target;
+    const { name, value } = e.target;
     this.setState(prevState => ({ ...prevState, [name]: value }));
   }
 
   handleReset = () => {
-    this.setState({ title: '', category: '' });
+    this.setState({ title: '', category: '', show: false });
   }
 
   handleSubmit = e => {
     e.preventDefault();
     const { createBook } = this.props;
-    createBook(this.state);
-    this.handleReset();
+    const { title, category } = this.state;
+    if (title !== '' && category !== '') {
+      createBook({ title, category });
+      this.handleReset();
+    } else {
+      this.setState(prevState => ({ ...prevState, show: true }));
+    }
   }
 
   render() {
-    const { title, category } = this.state;
+    const { title, category, show } = this.state;
     return (
-      <form>
-        <div className="form-group">
-          <label htmlFor="title">
-            Book Title:
-            <input
-              type="text"
-              name="title"
-              placeholder="Book Title"
-              className="form-control"
-              id="title"
-              required
-              value={title}
-              onChange={e => this.handleChange(e)}
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">
-            Book category:
-            <select value={category} onChange={e => this.handleChange(e)} className="form-control" id="category" name="category" required>
-              <option value="">None</option>
-              {CATEGORIES.map(category => (
-                <option key={Math.floor(Math.random() * 10000)} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
-        <button type="button" className="btn btn-primary" onClick={this.handleReset}>Reset</button>
-      </form>
+      <div className="form-pannel">
+        <h1 className="add-book">ADD NEW BOOK</h1>
+        {show && <Warning />}
+        <form className="form">
+          <input
+            type="text"
+            name="title"
+            placeholder="Book Title"
+            className="input-book"
+            required
+            value={title}
+            onChange={e => this.handleChange(e)}
+          />
+
+          <select value={category} onChange={e => this.handleChange(e)} className="select" name="category" required>
+            <option value="">None</option>
+            {CATEGORIES.map(category => (
+              <option key={Math.floor(Math.random() * 10000)} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+
+          <button type="button" className="add-rectangle" onClick={this.handleSubmit}>
+            <span className="add-button">ADD BOOK</span>
+          </button>
+        </form>
+
+      </div>
     );
   }
 }
